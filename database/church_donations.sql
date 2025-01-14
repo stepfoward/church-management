@@ -11,10 +11,10 @@ CREATE TABLE users (
 
 CREATE TABLE donations (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    jumla DECIMAL(10, 2),
+    jina_kamili VARCHAR(255),
     zaka DECIMAL(10, 2),
-    sadaka_part1 DECIMAL(10, 2),
-    sadaka_part2 DECIMAL(10, 2),
+    sadaka_58 DECIMAL(10, 2),
+    sadaka_42 DECIMAL(10, 2),
     s_kambi DECIMAL(10, 2),
     ctf DECIMAL(10, 2),
     shule DECIMAL(10, 2),
@@ -25,5 +25,8 @@ CREATE TABLE donations (
     s_sabato DECIMAL(10, 2),
     kwaya DECIMAL(10, 2),
     idara_ya_vijana DECIMAL(10, 2),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    date DATE
 );
+
+
+
