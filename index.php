@@ -124,14 +124,15 @@ if (!isset($_SESSION['user_id'])) {
         <a href="admin/quarterly_report.php">Quarterly Report</a>
         <a href="admin/monthly_report.php">Monthly Report</a>
         <a href="admin/yearly_report.php">Yearly Report</a>
+        <a href="admin/submit_data.php">Add offrings</a>
         <a href="admin/print_report.php">Print Report</a> <!-- Corrected the link for print report -->
     </div>
 
-    <!-- Donation Form inside Sidebar -->
+    <!-- Donation Form inside Sidebar
     <form action="admin/donation_form.php" method="POST">
         <button type="submit" class="btn btn-success btn-block">Go to Donation Form</button>
     </form>
-    
+     -->
     <!-- Logout inside Sidebar -->
     <form action="logout.php" method="POST">
         <button type="submit" class="btn btn-danger btn-block">Logout</button>

@@ -1,11 +1,23 @@
 <?php
-require('../admin/includes/config.php'); // Uunganisho wa database
+require('../admin/includes/config.php'); // Database connection
 require('../admin/includes/header.php');
 
 // Function to get donations for the specified day
 function getDonationsByDay($conn, $date) {
+    // Check if the connection is valid
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
     // Prepared SQL query to avoid SQL injection
     $sql = $conn->prepare("SELECT * FROM donations WHERE DATE(date) = ?");
+    
+    // Check if the query preparation was successful
+    if ($sql === false) {
+        die("Error preparing the query: " . $conn->error);
+    }
+
+    // Bind parameters to the query
     $sql->bind_param('s', $date);
     $sql->execute();
     $result = $sql->get_result();
@@ -38,6 +50,8 @@ function getDonationsByDay($conn, $date) {
         echo "<table class='table table-striped table-hover table-bordered text-center align-middle'>";
         echo "<thead class='table-warning text-dark'>
                 <tr>
+                    <th>Jina Kamili</th>  <!-- Added Jina Kamili column -->
+                    <th>Wahitaji</th>  <!-- Added Wahitaji column -->
                     <th>Jumla</th>
                     <th>Zaka</th>
                     <th>Sadaka 58</th>
@@ -77,6 +91,8 @@ function getDonationsByDay($conn, $date) {
             $total_idara_ya_vijana += $row['idara_ya_vijana'];
 
             echo "<tr>
+                    <td>{$row['jina_kamili']}</td>  <!-- Display Jina Kamili -->
+                    <td>{$row['wahitaji']}</td>  <!-- Display Wahitaji -->
                     <td><strong>{$calculated_jumla}</strong></td>
                     <td>{$row['zaka']}</td>
                     <td>{$row['sadaka_58']}</td>
@@ -98,6 +114,7 @@ function getDonationsByDay($conn, $date) {
         // Add totals row
         echo "<tfoot class='table-warning text-dark'>
                 <tr>
+                    <th colspan='2'><strong>Total</strong></th>  <!-- Total row spans 2 columns for Jina Kamili and Wahitaji -->
                     <th><strong>{$total_jumla}</strong></th>
                     <th><strong>{$total_zaka}</strong></th>
                     <th><strong>{$total_sadaka_58}</strong></th>
@@ -166,17 +183,6 @@ function getDonationsByDay($conn, $date) {
         </div>
     </div>
 </div>
-
-<script>
-// Convert the date format from yyyy-mm-dd to yyyy/mm/dd on form submission
-document.querySelector('form').addEventListener('submit', function(event) {
-    var dateInput = document.getElementById('date');
-    var dateValue = dateInput.value;
-    // Convert the format to yyyy/mm/dd
-    var formattedDate = dateValue.replace(/-/g, '/');
-    dateInput.value = formattedDate;
-});
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -11,8 +11,10 @@ CREATE TABLE users (
 
 CREATE TABLE donations (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    jina_kamili VARCHAR(255),
-    zaka DECIMAL(10, 2),
+    jina_kamili VARCHAR(255) NOT NULL,
+    jumla DECIMAL(10, 2),
+    zaka DECIMAL(10, 2) NOT NULL,
+    sadaka DECIMAL(10, 2),
     sadaka_58 DECIMAL(10, 2),
     sadaka_42 DECIMAL(10, 2),
     s_kambi DECIMAL(10, 2),
@@ -21,11 +23,12 @@ CREATE TABLE donations (
     majengo DECIMAL(10, 2),
     idara_ya_wanawake DECIMAL(10, 2),
     idara_ya_elimu DECIMAL(10, 2),
+    wahitaji DECIMAL(10, 2),
     amo_dorcas DECIMAL(10, 2),
     s_sabato DECIMAL(10, 2),
     kwaya DECIMAL(10, 2),
     idara_ya_vijana DECIMAL(10, 2),
-    date DATE
+    date DATE NOT NULL DEFAULT CURRENT_DATE  -- Automatically set the date to today's date
 );
 
 

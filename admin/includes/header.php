@@ -153,21 +153,14 @@ if (isset($_POST['search'])) {
     <a href="#">Quarterly Report</a>
     <a href="#">Monthly Report</a>
     <a href="#">Yearly Report</a>
-    <a href="#">Print Report</a>
-    <form action="admin/donation_form.php" method="POST">
-        <button type="submit" class="btn btn-success btn-block">Go to Donation Form</button>
-    </form>
-    <form action="logout.php" method="POST">
-        <button type="submit" class="btn btn-danger btn-block">Logout</button>
-    </form>
+    <a href="#">Add Offerings</a>
+    <a href="index.php">Print Report</a>
+
 </div>
 
 <!-- Main Content -->
 <div >
-    <div class="content-header">
-        <p id="welcome-message">Manage your reports and donations here.</p>
-    </div>
-
+  
     <!-- Display Search Results -->
     <div class="container mt-4">
         <?php if (!empty($searchQuery)): ?>
