@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misingi ya Imani ya Waadventista wa Sabato</title>
+    
+    <!-- Link ya Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Link ya Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Link ya Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-green-500 text-white p-5 text-center">
+        <h1>Misingi ya Imani ya Waadventista wa Sabato</h1>
+    </header>
+
+    <div class="container mt-5">
+        <section id="imani">
+            <h2 class="text-3xl text-green-600 mb-4">Misingi ya Imani za Waadventista wa Sabato</h2>
+            <p class="text-lg">Waadventista wa Sabato wana imani zinazotegemea mafundisho ya Biblia. Hapa chini tunajadili misingi muhimu ya imani zao. Tafadhali chagua msingi mmoja ili kujifunza kwa kina.</p>
+            
+            <!-- Options za Misingi ya Imani -->
+            <form>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="imaniOption" value="sabato" id="sabatoRadio" onclick="showDetails('sabato')">
+                    <label class="form-check-label" for="sabatoRadio">
+                        Sabato - Siku ya Mapumziko
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="imaniOption" value="yesu" id="yesuRadio" onclick="showDetails('yesu')">
+                    <label class="form-check-label" for="yesuRadio">
+                        Yesu Kristo - Mwokozi
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="imaniOption" value="wokovu" id="wokovuRadio" onclick="showDetails('wokovu')">
+                    <label class="form-check-label" for="wokovuRadio">
+                        Wokovu
+                    </label>
+                </div>
+            </form>
+            
+            <div id="sabatoDetails" class="imaniDetails mt-4 p-4 bg-white rounded shadow">
+                <h3 class="text-xl font-semibold text-green-600">Sabato - Siku ya Mapumziko</h3>
+                <p>Waadventista wa Sabato wanadhani kuwa Sabato ni siku ya kielelezo cha mapumziko ambayo Mungu alitangaza kuanzia uumbaji. Sabato inasherehekewa kuanzia jioni ya Ijumaa hadi jioni ya Jumamosi, kama ilivyoagizwa katika Agano la Kale. Wanaamini kuwa kushika Sabato kunaleta baraka na utakatifu katika maisha yao.</p>
+            </div>
+
+            <div id="yesuDetails" class="imaniDetails mt-4 p-4 bg-white rounded shadow">
+                <h3 class="text-xl font-semibold text-green-600">Yesu Kristo - Mwokozi</h3>
+                <p>Waadventista wa Sabato wanaamini katika wokovu kupitia Yesu Kristo. Wanamwamini kama Mwana wa Mungu, ambaye alikufa msalabani ili kuondoa dhambi za wanadamu. Kwa kumwamini Yesu na kufuata mafundisho yake, mtu anapata wokovu na uzima wa milele. Yesu pia anawakilisha mfano wa kweli wa uadilifu na unyenyekevu, na Waadventista wanashikilia kuwa tunaweza kumfuata katika maisha yetu ya kila siku.</p>
+            </div>
+
+            <div id="wokovuDetails" class="imaniDetails mt-4 p-4 bg-white rounded shadow">
+                <h3 class="text-xl font-semibold text-green-600">Wokovu</h3>
+                <p>Waadventista wa Sabato wanaamini kuwa wokovu unapatikana tu kwa imani katika Yesu Kristo, lakini pia wanasisitiza kuwa imani hii inapaswa kuonyeshwa kwa matendo mema. Wokovu si kwa matendo tu, bali kwa kumwamini Yesu kama Mwokozi na kutii maagizo ya Mungu. Wanaamini kuwa wokovu ni zawadi ya bure kutoka kwa Mungu, lakini kila mtu anapaswa kujitahidi kuishi maisha matakatifu kwa kumfuata Kristo.</p>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-gray-800 text-white p-4 text-center mt-5">
+        <p>&copy; 2025 Misingi ya Imani ya Waadventista wa Sabato. Haki zote zimelindwa.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        function showDetails(msingi) {
+            // Ficha zote kwanza
+            document.getElementById('sabatoDetails').style.display = 'none';
+            document.getElementById('yesuDetails').style.display = 'none';
+            document.getElementById('wokovuDetails').style.display = 'none';
+
+            // Onyesha tu sehemu inayohusiana na chaguo la mtumiaji
+            if (msingi === 'sabato') {
+                document.getElementById('sabatoDetails').style.display = 'block';
+            } else if (msingi === 'yesu') {
+                document.getElementById('yesuDetails').style.display = 'block';
+            } else if (msingi === 'wokovu') {
+                document.getElementById('wokovuDetails').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

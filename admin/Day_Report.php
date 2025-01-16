@@ -2,16 +2,32 @@
 require('../admin/includes/config.php'); // Database connection
 require('../admin/includes/header.php'); // Include your header
 
-// Function to get all donations with optional month filter
-function getDonationsByMonth($conn, $month = null) {
+// Function to get all donations with optional day or month filter
+function getDonationsByDayOrMonth($conn, $dayOfWeek = null, $month = null) {
     $sql = "SELECT * FROM donations";
-    if ($month) {
-        $sql .= " WHERE MONTH(date) = ?";
+    
+    // Add filter for day of the week if provided
+    if ($dayOfWeek) {
+        $sql .= " WHERE DAYOFWEEK(date) = ?";
     }
-    
-    $stmt = $conn->prepare($sql);
-    
+
+    // Add filter for month if provided
     if ($month) {
+        if ($dayOfWeek) {
+            $sql .= " AND MONTH(date) = ?";
+        } else {
+            $sql .= " WHERE MONTH(date) = ?";
+        }
+    }
+
+    $stmt = $conn->prepare($sql);
+
+    // Bind parameters based on which filter is used
+    if ($dayOfWeek && $month) {
+        $stmt->bind_param("ii", $dayOfWeek, $month);
+    } elseif ($dayOfWeek) {
+        $stmt->bind_param("i", $dayOfWeek);
+    } elseif ($month) {
         $stmt->bind_param("i", $month);
     }
 
@@ -20,17 +36,9 @@ function getDonationsByMonth($conn, $month = null) {
 }
 
 // Handle form submission
+$selectedDayOfWeek = isset($_GET['dayOfWeek']) ? $_GET['dayOfWeek'] : null;
 $selectedMonth = isset($_GET['month']) ? $_GET['month'] : null;
-$searchTerm = isset($_GET['search']) ? $_GET['search'] : null;
 
-// Month names array
-$months = [
-    1 => "Januari", 2 => "Februari", 3 => "Machi", 4 => "Aprili", 
-    5 => "Mei", 6 => "Juni", 7 => "Julai", 8 => "Agosti", 
-    9 => "Septemba", 10 => "Oktoba", 11 => "Novemba", 12 => "Desemba"
-];
-
-$monthName = $selectedMonth ? $months[$selectedMonth] : 'Jumla ya Michango';
 ?>
 
 <!DOCTYPE html>
@@ -166,6 +174,21 @@ $monthName = $selectedMonth ? $months[$selectedMonth] : 'Jumla ya Michango';
                 <div class="col-md-12 mt-3">
                     <form action="" method="GET" class="d-flex justify-content-center align-items-center gap-3">
                         
+                        <!-- Day of Week Dropdown -->
+                        <div class="input-group mb-3">
+                            <select name="dayOfWeek" class="form-control">
+                                <option value="">Chagua Siku ya Wiki</option>
+                                <option value="1" <?php echo ($selectedDayOfWeek == 1) ? 'selected' : ''; ?>>Jumatatu</option>
+                                <option value="2" <?php echo ($selectedDayOfWeek == 2) ? 'selected' : ''; ?>>Jumanne</option>
+                                <option value="3" <?php echo ($selectedDayOfWeek == 3) ? 'selected' : ''; ?>>Jumatano</option>
+                                <option value="4" <?php echo ($selectedDayOfWeek == 4) ? 'selected' : ''; ?>>Alhamisi</option>
+                                <option value="5" <?php echo ($selectedDayOfWeek == 5) ? 'selected' : ''; ?>>Ijumaa</option>
+                                <option value="6" <?php echo ($selectedDayOfWeek == 6) ? 'selected' : ''; ?>>Jumamosi</option>
+                                <option value="7" <?php echo ($selectedDayOfWeek == 7) ? 'selected' : ''; ?>>Jumapili</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Month Dropdown -->
                         <div class="input-group mb-3">
                             <select name="month" class="form-control">
                                 <option value="">Chagua Mwezi</option>
@@ -182,15 +205,16 @@ $monthName = $selectedMonth ? $months[$selectedMonth] : 'Jumla ya Michango';
                                 <option value="11" <?php echo ($selectedMonth == 11) ? 'selected' : ''; ?>>Novemba</option>
                                 <option value="12" <?php echo ($selectedMonth == 12) ? 'selected' : ''; ?>>Desemba</option>
                             </select>
-                            <button type="submit" class="btn btn-secondary">Tafuta kwa Mwezi</button>
                         </div>
+
+                        <button type="submit" class="btn btn-secondary">Tafuta</button>
                     </form>
                 </div>
             </div>
 
             <?php
-            // Fetch donations with month filter if selected
-            $donations = getDonationsByMonth($conn, $selectedMonth);
+            // Fetch donations with day or month filter if selected
+            $donations = getDonationsByDayOrMonth($conn, $selectedDayOfWeek, $selectedMonth);
             $totals = [
                 'jumla' => 0,
                 'zaka' => 0,
@@ -211,7 +235,7 @@ $monthName = $selectedMonth ? $months[$selectedMonth] : 'Jumla ya Michango';
 
             if ($donations->num_rows > 0) {
                 echo "<div class='mt-5'>";
-                echo "<h3 class='text-center' id='printTitle'>Ripoti ya Michango - $monthName</h3>";
+                echo "<h3 class='text-center' id='printTitle'>Ripoti ya Michango</h3>";
                 echo "<button class='btn btn-success mb-3 print-button' onclick='window.print()'>Chapisha Ripoti</button>";
                 echo "<table class='table table-striped table-bordered text-center mt-3' id='donationTable'>";
                 echo "<thead class='table-warning'>
@@ -234,7 +258,6 @@ $monthName = $selectedMonth ? $months[$selectedMonth] : 'Jumla ya Michango';
                             <th>Kwaya</th>
                             <th>Idara ya Vijana</th>
                             <th>Tarehe</th>
-                            <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>";
@@ -259,19 +282,6 @@ $monthName = $selectedMonth ? $months[$selectedMonth] : 'Jumla ya Michango';
                             <td>{$row['kwaya']}</td>
                             <td>{$row['idara_ya_vijana']}</td>
                             <td>{$row['date']}</td>
-                            <td>
-                                <div class='flex space-x-2'>
-                                    <a href='#' class='btn btn-info btn-sm'>
-                                        <i class='fas fa-eye'></i> View
-                                    </a>
-                                    <a href='#' class='btn btn-warning btn-sm'>
-                                        <i class='fas fa-edit'></i> Edit
-                                    </a>
-                                    <a href='#' class='btn btn-danger btn-sm'>
-                                        <i class='fas fa-trash-alt'></i> Delete
-                                    </a>
-                                </div>
-                            </td>
                         </tr>";
                     
                     // Calculate totals
@@ -289,7 +299,7 @@ $monthName = $selectedMonth ? $months[$selectedMonth] : 'Jumla ya Michango';
                 echo "<td></td></tr>";
                 echo "</tbody></table></div>";
             } else {
-                echo "<div class='alert alert-warning'>Hakuna michango iliyorekodiwa.</div>";
+                echo "<div class='alert alert-warning'>Hakuna michango iliyorekodiwa kwa siku hii au mwezi.</div>";
             }
             ?>
         </div>

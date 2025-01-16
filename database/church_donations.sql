@@ -32,4 +32,13 @@ CREATE TABLE donations (
 );
 
 
+CREATE TABLE michango (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    phone VARCHAR(15) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    department VARCHAR(255) NOT NULL,
+    donation_amount DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
